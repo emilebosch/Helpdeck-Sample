@@ -1,0 +1,288 @@
+﻿@using System.Linq;
+@using System.Collections.Generic;
+@{
+    var ticket = (Ticket)Model;
+}
+<style>
+    body 
+    {
+        font-family:sans-serif;
+        font-size:10pt;
+        color:#0a0a0a;
+    }
+    a 
+    {
+        color:Black;
+    }
+    label 
+    {
+        font-weight:bold;
+        display:block;
+        margin:10px 0px;
+    }
+    #ticket 
+    {
+        background-color:#efefef;
+        border-radius:10px;
+        padding:10px;
+    }
+    
+    form 
+    {
+        padding:0px;
+        margin:0px;
+    }
+    
+    #document 
+    {
+       background-color:#fefefe;
+       border-radius:10px;
+       padding:10px;
+       margin-bottom:10px;
+    }
+    
+    #ticket h1 
+    {
+        padding:0px;
+        margin:0px;
+        float:left;
+    }
+    
+    input, textarea, select 
+    {
+        font-family:Sans-Serif;
+        padding:5px;
+    }
+   
+    
+    input[type='text'],textarea
+    {
+        width:100%;
+    }
+    
+     label[for='mail']
+    {
+        display:inline-block;
+        font-weight:normal;
+    }
+    
+    
+    input[type='checkbox'] 
+    {
+        padding:0px;
+        margin:0px;
+    }
+    
+    #description 
+    {
+        height:100px;
+    }
+    
+    #comment 
+    {
+        height:100px;
+    }
+    
+    
+    #bar 
+    {
+        float:right;     
+    }
+    
+    #bar a 
+    {
+        background-color:#efefef;
+        border:1px solid #cacaca;
+        border-radius:4px;
+        padding:5px;
+        color:#ee;
+    }
+    
+    .inputgroup 
+    {
+        margin:0px;
+        padding:0px;
+    }
+    .inputgroup li
+    {
+        display:inline-block;
+    }
+    
+    .meta 
+    {
+        border-bottom:1px solid #a0a0a0;
+        padding-bottom:10px;
+    }
+    .latest 
+    {
+        background-color:#efefef;
+        padding:5px;
+        margin-bottom:5px;
+    }
+    
+    UL.comments 
+    {
+        
+        padding:10px;
+        margin:10xp;
+        border-radius:5px;
+        background-color:#efefef;
+    }
+    
+    sub 
+    {
+        font-size:10pt;
+        color:#66;
+    }
+    
+    sub b 
+    {
+        background-color:#a0a0a0;
+        border-radius:4px;
+        color:White;
+        padding:2px 5px;
+    }
+    
+    .comments LI 
+    {
+        background-color:white;
+        padding:10px;
+        list-style:none;
+        margin:0px;
+        border-bottom:1px solid #efefef;       
+    }
+    .comments LI:first-child 
+    {
+        border-radius: 5px 5px 0px 0px;
+    }
+    .comments LI DIV 
+    {
+        margin:10px;
+    }
+    h1 a 
+    {
+        font-size:10pt;
+    }
+    
+     #centerpoint {
+            top: 50%;
+            left: 50%;
+            position: absolute;
+        }
+        #dialog 
+        {
+            background-color:black;
+            position: relative;
+            width: 600px;
+            margin-left: -300px;
+            height: 400px;
+            margin-top: -200px;
+        }
+</style>
+<div id="ticket">
+
+@Html.Partial("App/Views/Shared/_Flash.cshtml")   
+
+<h1>Ticket #@ticket.Id <a href='/tickets/'>Back to tickets</a></h1>
+
+<ul id="bar">
+    <a href='/tickets/@ticket.Id/delete'>Delete</a>
+    @if (@ticket.HasIssueTicket())
+    {
+        <a target="_blank" href='@ticket.IssueTicketUrl'>JIRA: (@ticket.IssueTicketId): @ticket.IssueTicketUrl</a> <a href='/tickets/@ticket.Id/unshare'>Unshare!</a>
+    }
+    else
+    {
+      <a href='/tickets/@ticket.Id/share'>Share</a> 
+    }
+      <a href='/kb/new/fromticket/@ticket.Id'>Convert to KB</a> 
+</ul>
+<div style='clear:both'></div>
+
+    <form method='post' action='/tickets/@ticket.Id/update'>
+
+    <div id='document'>
+        
+        <div class='meta'>
+            @if (ticket.AssignedTo != null)
+            {
+                <text><b>Assigned to</b> @ticket.AssignedTo.Name</text>
+            }
+            else
+            {
+                <a href='/tickets/@ticket.Id/claim'>This ticket is not owned, claim it.</a>
+            }    
+            @if (ticket.RequestedBy != null)
+            {
+                <text><b>Requested by</b> <a href='/users/@ticket.RequestedBy.Id'>@ticket.RequestedBy.Name</a> (@ticket.RequestedBy.Email)</text>
+            }        
+        </div>
+
+        <label for='subject'>Subject</label>
+        <input type='text' id='subject' value='@ticket.Subject' name='subject'/>
+
+        <ul class='inputgroup'>
+        <li>
+            <label for='status'>State</label>
+            <select id='status' name='state'>
+                <option @(ticket.State == TicketState.Open ? "selected" : "") value='Open'>Open</option>
+                <option @(ticket.State == TicketState.Pending ? "selected" : "") value='Pending'>Pending</option>
+                <option @(ticket.State == TicketState.Resolved ? "selected" : "") value='Resolved'>Resolved</option>
+            </select>
+        </li>
+
+        <li>
+            <label for='priority'>Priority</label>
+            <select id='priority' name='priority'>
+                <option @(ticket.Priority == TicketPriority.Low ? "selected" : "") value='Low'>Low</option>
+                <option @(ticket.Priority == TicketPriority.Normal ? "selected" : "") value='Normal'>Normal</option>
+                <option @(ticket.Priority == TicketPriority.High ? "selected" : "") value='High'>High</option>
+                <option @(ticket.Priority == TicketPriority.Urgent ? "selected" : "") value='Urgent'>Urgent</option>
+            </select>
+        </li>
+
+        <li>
+            <label for='type'>Type</label>
+                <select id='type' name='type'>
+                    <option @(ticket.Type == TicketType.Question ? "selected" : "") value='Question'>Question</option>
+                    <option @(ticket.Type == TicketType.Incident ? "selected" : "")  value='Incident'>Incident</option>
+                    <option @(ticket.Type == TicketType.Problem ? "selected" : "")  value='Problem'>Problem</option>
+                    <option @(ticket.Type == TicketType.Task ? "selected" : "")  value='Task'>Task</option>
+                </select>
+            </li>
+            <li>            
+               <label for='assignedto'>Assigned to</label>
+                <select id='assignedto' name='assignedto'>
+                    <option>Emile</option>
+                </select>
+            </li>
+        </ul>
+        <label for='comment'>Comment</label>      
+        @{
+            var lastcomment = ticket.Comments.OrderByDescending(s => s.Id).FirstOrDefault();
+            if (lastcomment != null)
+            {
+                <ul class='comments' id="currentcomment">
+                    @Html.Partial("App/Views/Tickets/_comment.cshtml", lastcomment)    
+                </ul>        
+            }
+        }
+
+        @foreach (var attachment in ticket.Attachments)
+        {
+            @Html.Partial("App/Views/Tickets/_attachment.cshtml", attachment)    
+        }
+
+        <textarea name='comment' placeholder="Write your comment here" id="comment"></textarea>
+        <input type="checkbox" id="private" name='private' value='true'/> <label for='private'>Make this comment private</label>
+    </div>
+     <input type="submit" name='action' value="Update Ticket!" />
+    </form>
+</div>
+<h1>Comments</h1>
+<ul class='comments' id='allcomments'>
+    @foreach (var c in ticket.Comments.OrderBy(s => s.Id))
+    {
+        @Html.Partial("App/Views/Tickets/_comment.cshtml", c)    
+    }
+</ul>

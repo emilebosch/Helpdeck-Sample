@@ -1,0 +1,42 @@
+﻿
+@Flash.GetFlash()
+
+<h1>@Model.Title</h1>
+@Model.Created
+@Model.CreatedBy.Name
+<div>
+    @Model.Text
+</div>
+
+@if (App.Get<UserService>().IsLoggedIn()) {
+    if (Model.Votes.Count > 0) 
+    {
+        <text>You find this helpful!</text>
+    }
+    else
+    {
+        <a href='/kb/@Model.Id/recommend'>I found this helpful!</a>
+    }
+}   
+<ul>
+    @foreach (var x in Model.Comments)
+    {
+        <li>
+            @x.Description
+            @x.CommentedBy.Name
+            @x.Created
+        </li>
+    }
+</ul>
+@if (App.Get<UserService>().IsLoggedIn())
+{
+    <form action="/kb/@Model.Id/comment" method="post">
+        <label for='comment'>Your comment</label>
+        <textarea name='description' id="comment"></textarea>
+        <input type='submit' value='comment' name='action' value='Create!' />
+    </form>
+}
+else
+{
+    <text>You can only comment if you're logged in :-)</text>
+}

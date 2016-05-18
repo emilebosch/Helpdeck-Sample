@@ -1,0 +1,108 @@
+﻿@using System.Linq;
+<style>
+    body, table
+    {
+        font-family:sans-serif;
+        font-size:10pt;
+        color:#0a0a0a;        
+    }
+    
+    table 
+    {
+       padding:0px;
+       margin:0px;
+       border:0px;
+       border-collapse:collapse;
+    }
+    
+    td,th
+    {
+        padding:8px;
+        border-bottom:1px solid #a0a0a0;
+    }
+    a 
+    {
+        color:Black;
+    }
+    tr:nth-child(even)
+    {
+        background-color:#fafafa;
+    }
+    th
+    {
+        background-color:#dedede;
+        font-weight:bold;
+        
+    }
+    
+       #ticket 
+    {
+        background-color:#efefef;
+        border-radius:10px;
+        padding:10px;
+    }
+    
+    form 
+    {
+        padding:0px;
+        margin:0px;
+    }
+    
+    #document 
+    {
+       background-color:#fefefe;
+       border-radius:10px;
+       padding:10px;
+       margin-bottom:10px;
+    }
+    
+     #ticket h1 
+    {
+        padding:0px;
+        margin:0px;
+        float:left;
+    }
+      
+    #bar 
+    {
+        float:right;
+    }
+</style>
+<div id="ticket">
+<h1>View all tickets</h1>
+    <ul id="bar">
+        <a href='/tickets/new'>Create ticket</a>
+    </ul>
+<div style='clear:both'></div>
+    <div id='document'>
+@Html.Partial("App/Views/Shared/_Flash.cshtml")  
+<table>
+<tr><th>Prio</th><th>Ticket</th><th>State</th><th>Type</th><th>JIRA</th><th>Assigned to</th><th>Updated</th><th></th></tr>
+@foreach (var x in @Model)
+{
+    <tr>
+    <td>@x.Priority</td>
+    <td><a href='/tickets/@x.Id'>@x.Subject</a></td><td>@x.State</td><td>@x.Type</td><td>
+    @if (@x.HasIssueTicket())
+    {
+        <a target='_blank' href='@x.IssueTicketUrl'>@x.IssueTicketId</a>
+    } 
+    </td>
+    <td>
+    @if (@x.AssignedTo != null)
+    {
+        @x.AssignedTo.Name
+    }
+    else
+    {
+        <a href='/tickets/@x.Id/claim'>Claim this!</a>
+    }
+    </td>
+    <td>@x.Updated</td>
+    <td><input type='checkbox' /></td>
+    </tr>
+}
+</table>
+</div>
+
+</div>

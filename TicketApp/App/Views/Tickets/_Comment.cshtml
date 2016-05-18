@@ -1,0 +1,27 @@
+﻿<li>
+    <div style='margin-left:10px;'>
+        @Model.Description
+        @foreach (var attachment in ((Comment)Model).Attachments)
+        {
+            @Html.Partial("App/Views/Tickets/_attachment.cshtml", attachment)    
+        }
+    </div>
+    <sub>
+    @if (@Model.CommentedBy != null)
+    {
+        <text>
+        Commented @(Model.Private?"privately by":"by")
+        <strong>@Model.CommentedBy.Name</strong>
+        @if (@Model.CommentedBy.Role == UserRole.Admin)
+        {
+            <b>Admin</b>
+        }
+        @if (@Model.CommentedBy.Role == UserRole.Agent)
+        {
+            <b>Agent</b>
+        }
+        </text>
+    }
+    on @Model.Created
+    </sub>
+</li>   

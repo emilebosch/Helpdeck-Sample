@@ -1,0 +1,72 @@
+﻿<style>
+    body 
+    {
+        font-family:sans-serif;
+        font-size:10pt;
+        color:#0a0a0a;
+    }
+    a 
+    {
+        color:Black;
+    }
+     #document 
+    {
+       background-color:#fefefe;
+       border-radius:10px;
+       padding:10px;
+    }
+    label 
+    {
+        font-weight:bold;
+        display:block;
+        margin:10px 0px;
+    }
+    #ticket 
+    {
+        background-color:#efefef;
+        border-radius:10px;
+        padding:10px;
+    }
+    .search
+    {
+        background-color:#efefef;
+        border-radius:10px;
+        padding:10px;
+        margin-bottom:10px;
+    }
+    
+    h2 
+    {
+        margin:0px;
+        padding:0px;
+    }
+    h1 
+    {
+        margin:0px;
+        padding:0px;
+    }
+     input, textarea, select,button
+    {
+        padding:5px;
+    }
+</style>
+<h1>Welcome on the knowledge base</h1>
+
+@Html.Partial("App/Views/Kb/_Search.cshtml")   
+
+<div id='ticket'>
+    <h1>Articles</h1>
+    <div id='document'>
+    @foreach (var forum in @Model)
+    {
+        <div class='forum'>
+            <h2>@forum.Name</h2>
+            <ul>
+            @foreach(var x in forum.Posts)  {
+                <li><a href='/kb/@x.Id'>@x.Title</a></li>
+            }
+            </ul>
+        </div>
+    }
+    </div>
+</div>

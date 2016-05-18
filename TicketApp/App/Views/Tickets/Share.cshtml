@@ -1,0 +1,40 @@
+﻿
+<style>
+    .block 
+    {
+        display:inline-block;
+        vertical-align:top;
+        padding:10px;
+        border: 1px solid #cecece;
+    }
+    .block h2
+    {
+        padding:0px;
+        margin:0px;
+    }
+</style>
+<h1>Create a link to Jira issue</h1>
+
+<form method='post' action='/tickets/@Model.Ticket.Id/share'>
+
+    <div class='block'>
+    <h2>Link to JIRA Issue</h2>
+    <ul>
+    @foreach (var issue in Model.Issues)
+    {
+        <li>
+            <input type='radio' name='issueno' id='@issue.Id' value='@issue.Id'/>
+            <label for='@issue.Id' id='@issue.Id'>JIRA Issue (@issue.Id)</label> @issue.Id
+        </li>    
+    }
+    </ul>
+    <input type='submit' name='action' value='Link Jira Issue'>
+    </div>
+
+    <div class='block'>
+    <h2>Create a new issue</h2>
+    <label for='it'>Type</label><input type='text' id='it' name='issuetype'>
+
+    <input type='submit' name='action' value='Create Jira Issue'>   
+    </div>
+</form>

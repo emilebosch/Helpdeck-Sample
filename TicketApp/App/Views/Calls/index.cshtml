@@ -1,0 +1,17 @@
+﻿<ul>
+    @foreach (TicketApp.Call call in Model)
+    {
+        <li>
+            @if (call.KnownCaller == null)
+            {
+                <span>Unknown customer @call.From calling</span>
+            }
+            else
+            {
+                <span>@call.KnownCaller.Name calling</span>
+            }
+            <a href='/calls/@call.Id/accept'>Accept @(call.KnownCaller != null ? call.KnownCaller.Name : call.From)</a>
+            <a href='/calls/@call.Id/reject'>Reject @(call.KnownCaller != null ? call.KnownCaller.Name : call.From)</a>
+        </li>
+    }
+</ul>

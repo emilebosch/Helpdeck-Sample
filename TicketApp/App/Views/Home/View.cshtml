@@ -1,0 +1,28 @@
+﻿@using Catalyst;
+<style>
+    table, body
+    {
+        font-family: sans-serif;
+        font-size: 10pt;
+    } 
+    .error { border:2px solid red; }
+</style>
+
+<form action="/home" method="post">
+    
+    <h1>Project</h1>     
+    @{
+        var i = 0;
+        var projectForm = new Form(Model, "project");
+     }
+    @Html.Raw(projectForm.Render())
+
+    <h2>Tasks</h2>   
+    @foreach (var task in Model.Tasks)
+    {
+        var taskForm = projectForm.ChildForm(task, "tasks", index: i++);
+        <text>@Html.Raw(taskForm.Render())</text>          
+    }
+    <hr size="1"/>
+    <input type="submit" />
+</form>

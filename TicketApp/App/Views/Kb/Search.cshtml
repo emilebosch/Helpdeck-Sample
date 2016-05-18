@@ -1,0 +1,11 @@
+﻿<h1>Search topics</h1>
+@Html.Partial("App/Views/Kb/_Search.cshtml")    
+<ul>
+@foreach (var result in @Model)
+{
+    <li>
+        <a href='/kb/@result.Id'>@result.Title</a>
+        <span>@result.Text</span>    
+    </li>
+}
+</ul>

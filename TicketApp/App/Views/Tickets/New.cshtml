@@ -1,0 +1,39 @@
+﻿<h1>Create ticket</h1>
+
+<form method='post' action='/tickets/new'>
+    
+    <label for='subject'>Subject</label>
+    <input type='text' id='subject' name='subject'/>
+    
+         <label for='status'>State</label>
+        <select id='status' name='state'>
+            <option value='Open'>Open</option>
+            <option value='Pending'>Pending</option>
+            <option value='Resolved'>Resolved</option>
+        </select>
+
+         <label for='priority'>Priority</label>
+        <select id='priority' name='priority'>
+            <option value='Low'>Low</option>
+            <option value='Normal'>Normal</option>
+            <option value='High'>High</option>
+            <option value='Urgent'>Urgent</option>
+        </select>
+
+        
+        <label for='type'>Type</label>
+        <select id='type' name='type' multiple=multiple>
+            <option value='Question'>Question</option>
+            <option value='Incident'>Incident</option>
+            <option value='Problem'>Problem</option>
+            <option value='Task'>Task</option>
+        </select>
+
+
+
+    <label for='summary'>Summary</label>
+    <textarea rows="10" cols="20" name='summary' id="summary"></textarea>
+
+        <input type="submit" name='action' value="Bla!" />
+    <input type="submit" name='action' value="Create!" />
+</form>
